@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: alves-crm-api
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/alvescrm?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    username: ${SPRING_DATASOURCE_USERNAME:alvescrm}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  sql:
+    init:
+      mode: always
+  jackson:
+    default-property-inclusion: non_null
+server:
+  port: ${SERVER_PORT:8080}
+app:
+  security:
+    jwt-secret: ${JWT_SECRET}
+    token-hours: ${JWT_TOKEN_HOURS:12}
+  admin:
+    email: ${CRM_ADMIN_EMAIL}
+    password: ${CRM_ADMIN_PASSWORD}
+  whatsapp:
+    evolution-url: ${EVOLUTION_API_URL:http://localhost:8081}
+    evolution-api-key: ${EVOLUTION_API_KEY}
+    instance: ${EVOLUTION_INSTANCE:suporte}
+    webhook-secret: ${EVOLUTION_WEBHOOK_SECRET}
+    closed-message: ${CRM_CLOSED_MESSAGE:Olá! Agradecemos por conversar com a equipe Alves.CRM. Este atendimento foi encerrado, mas continuamos à disposição caso precise de suporte ou tenha novas dúvidas. Será um prazer ajudar você novamente.}

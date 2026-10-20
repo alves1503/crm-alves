@@ -1,0 +1,124 @@
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:?Defina MYSQL_DATABASE no arquivo .env}
+      MYSQL_USER: ${MYSQL_USER:?Defina MYSQL_USER no arquivo .env}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Defina MYSQL_PASSWORD no arquivo .env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Defina MYSQL_ROOT_PASSWORD no arquivo .env}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - mysql --protocol=TCP -h 127.0.0.1 -u"$$MYSQL_USER" -p"$$MYSQL_PASSWORD" "$$MYSQL_DATABASE" -e "SELECT 1" > /dev/null 2>&1
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:?Defina MYSQL_DATABASE no arquivo .env}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:?Defina MYSQL_USER no arquivo .env}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:?Defina MYSQL_PASSWORD no arquivo .env}
+      JWT_SECRET: ${JWT_SECRET:?Defina JWT_SECRET no arquivo .env}
+      JWT_TOKEN_HOURS: ${JWT_TOKEN_HOURS:-12}
+      CRM_ADMIN_EMAIL: ${CRM_ADMIN_EMAIL:?Defina CRM_ADMIN_EMAIL no arquivo .env}
+      CRM_ADMIN_PASSWORD: ${CRM_ADMIN_PASSWORD:?Defina CRM_ADMIN_PASSWORD no arquivo .env}
+      EVOLUTION_API_URL: http://evolution:8080
+      EVOLUTION_API_KEY: ${EVOLUTION_API_KEY:?Defina EVOLUTION_API_KEY no arquivo .env}
+      EVOLUTION_INSTANCE: ${EVOLUTION_INSTANCE:-suporte}
+      EVOLUTION_WEBHOOK_SECRET: ${EVOLUTION_WEBHOOK_SECRET:?Defina EVOLUTION_WEBHOOK_SECRET no arquivo .env}
+      CRM_CLOSED_MESSAGE: ${CRM_CLOSED_MESSAGE:-Olá! Agradecemos por conversar com a equipe Alves.CRM. Este atendimento foi encerrado, mas continuamos à disposição caso precise de suporte ou tenha novas dúvidas. Será um prazer ajudar você novamente.}
+    depends_on:
+      mysql:
+        condition: service_healthy
+      evolution:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+  evolution:
+    image: evoapicloud/evolution-api:v2.3.7
+    restart: unless-stopped
+    depends_on:
+      evolution-db:
+        condition: service_healthy
+      evolution-redis:
+        condition: service_started
+    environment:
+      SERVER_URL: http://localhost:8081
+      SERVER_PORT: 8080
+      AUTHENTICATION_API_KEY: ${EVOLUTION_API_KEY:?Defina EVOLUTION_API_KEY no arquivo .env}
+      DATABASE_PROVIDER: postgresql
+      DATABASE_CONNECTION_URI: postgresql://evolution:${EVOLUTION_DB_PASSWORD:?Defina EVOLUTION_DB_PASSWORD no arquivo .env}@evolution-db:5432/evolution_db?schema=evolution_api
+      DATABASE_CONNECTION_CLIENT_NAME: alvescrm_evolution
+      DATABASE_SAVE_DATA_INSTANCE: "true"
+      DATABASE_SAVE_DATA_NEW_MESSAGE: "true"
+      DATABASE_SAVE_MESSAGE_UPDATE: "true"
+      DATABASE_SAVE_DATA_CONTACTS: "true"
+      DATABASE_SAVE_DATA_CHATS: "true"
+      CACHE_REDIS_ENABLED: "true"
+      CACHE_REDIS_URI: redis://evolution-redis:6379/6
+      CACHE_REDIS_PREFIX_KEY: alvescrm-evolution
+      CACHE_REDIS_SAVE_INSTANCES: "false"
+      CONFIG_SESSION_PHONE_CLIENT: Alves.CRM
+      CONFIG_SESSION_PHONE_NAME: Chrome
+      WEBHOOK_GLOBAL_ENABLED: "true"
+      WEBHOOK_GLOBAL_URL: http://backend:8080/api/webhooks/evolution?secret=${EVOLUTION_WEBHOOK_SECRET:?Defina EVOLUTION_WEBHOOK_SECRET no arquivo .env}
+      WEBHOOK_GLOBAL_WEBHOOK_BY_EVENTS: "false"
+      WEBHOOK_EVENTS_MESSAGES_UPSERT: "true"
+    volumes:
+      - evolution_instances:/evolution/instances
+    ports:
+      - "8081:8080"
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:8080/instance/fetchInstances',{headers:{apikey:process.env.AUTHENTICATION_API_KEY}}).then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 90s
+  evolution-db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: evolution_db
+      POSTGRES_USER: evolution
+      POSTGRES_PASSWORD: ${EVOLUTION_DB_PASSWORD:?Defina EVOLUTION_DB_PASSWORD no arquivo .env}
+    volumes:
+      - evolution_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U evolution -d evolution_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  evolution-redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - evolution_redis_data:/data
+
+volumes:
+  mysql_data:
+  evolution_instances:
+  evolution_db_data:
+  evolution_redis_data:

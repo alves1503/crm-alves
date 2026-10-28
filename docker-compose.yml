@@ -36,6 +36,12 @@ services:
       EVOLUTION_INSTANCE: ${EVOLUTION_INSTANCE:-suporte}
       EVOLUTION_WEBHOOK_SECRET: ${EVOLUTION_WEBHOOK_SECRET:?Defina EVOLUTION_WEBHOOK_SECRET no arquivo .env}
       CRM_CLOSED_MESSAGE: ${CRM_CLOSED_MESSAGE:-Olá! Agradecemos por conversar com a equipe Alves.CRM. Este atendimento foi encerrado, mas continuamos à disposição caso precise de suporte ou tenha novas dúvidas. Será um prazer ajudar você novamente.}
+      AI_ENABLED: ${AI_ENABLED:-false}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-https://api.openai.com/v1}
+      OPENAI_CHAT_MODEL: ${OPENAI_CHAT_MODEL:-gpt-4.1-mini}
+      OPENAI_EMBEDDING_MODEL: ${OPENAI_EMBEDDING_MODEL:-text-embedding-3-small}
+      AI_MAX_HISTORY_MESSAGES: ${AI_MAX_HISTORY_MESSAGES:-12}
     depends_on:
       mysql:
         condition: service_healthy

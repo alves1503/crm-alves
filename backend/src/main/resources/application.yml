@@ -10,7 +10,11 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD}
   sql:
     init:
-      mode: always
+      mode: never
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 1
   jackson:
     default-property-inclusion: non_null
 server:
@@ -28,3 +32,10 @@ app:
     instance: ${EVOLUTION_INSTANCE:suporte}
     webhook-secret: ${EVOLUTION_WEBHOOK_SECRET}
     closed-message: ${CRM_CLOSED_MESSAGE:Olá! Agradecemos por conversar com a equipe Alves.CRM. Este atendimento foi encerrado, mas continuamos à disposição caso precise de suporte ou tenha novas dúvidas. Será um prazer ajudar você novamente.}
+  ai:
+    enabled: ${AI_ENABLED:false}
+    openai-api-key: ${OPENAI_API_KEY:}
+    base-url: ${OPENAI_BASE_URL:https://api.openai.com/v1}
+    chat-model: ${OPENAI_CHAT_MODEL:gpt-4.1-mini}
+    embedding-model: ${OPENAI_EMBEDDING_MODEL:text-embedding-3-small}
+    max-history-messages: ${AI_MAX_HISTORY_MESSAGES:12}

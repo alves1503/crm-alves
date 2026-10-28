@@ -9,28 +9,39 @@ CRM de atendimento via WhatsApp para organizar conversas e responder clientes em
 
 ## Visão geral
 
-- Inbox para acompanhar conversas e seus estados.
-- Busca e filtragem de atendimentos.
-- Histórico de mensagens recebidas e enviadas.
-- Respostas enviadas pelo WhatsApp conectado.
-- Assinatura de atendente nas mensagens enviadas pelo CRM.
+O Alves.CRM é um CRM completo para atendimento WhatsApp com foco em produtividade, automação e conversão comercial. Ele combina gestão de conversas, automação orientada por IA e módulos voltados para geração de oportunidades e organização de atendimento.
+
+### Funcionalidades atuais
+
+- Inbox completo para acompanhar conversas por status, busca e fila de atendimento.
+- Histórico de mensagens recebidas e enviadas em uma mesma interface.
+- Envio de respostas pelo WhatsApp conectado via Evolution API.
+- Assinatura de atendente nas mensagens emitidas pelo CRM.
 - Encerramento de atendimento com mensagem configurável.
-- Autenticação por e-mail e senha, com tokens JWT.
-- Integração com WhatsApp por QR Code via Evolution API.
-- Interface web responsiva.
+- Autenticação com e-mail, senha e JWT.
+- Bootstrap de administrador inicial com criação automática da conta.
+- Integração WhatsApp por QR Code e monitoramento do estado da instância.
+- Módulo de leads para registrar contatos, interesse e observações.
+- Módulo de agenda para marcar reuniões com leads e acompanhar compromissos.
+- Catálogo de serviços com precificação, prazo e status ativo/inativo.
+- Assistente de IA acionável para responder clientes, capturar leads e agendar reuniões.
+- Treinamento do modelo com instruções e materiais de conhecimento indexados por embeddings.
+- Transferência de atendimento para humano e reativação manual do modo IA no chat.
+- Gestão de conhecimento e instruções sem precisar mexer diretamente no código.
+- Interface web responsiva com páginas dedicadas para inbox, leads, reuniões, serviços e treinamento da IA.
 
 ## Tecnologias
 
-| Camada | Tecnologias |
-| --- | --- |
-| Frontend | React 18, TypeScript, Vite, Three.js, Lucide |
-| Backend | Java 17, Spring Boot 3, Spring Security, JDBC, JWT |
-| Banco do CRM | MySQL 8.4 |
-| Integração WhatsApp | Evolution API 2.3.7 |
-| Persistência da Evolution | PostgreSQL 15 e Redis 7 |
-| Execução | Docker Compose |
+| Camada                    | Tecnologias                                        |
+| ------------------------- | -------------------------------------------------- |
+| Frontend                  | React 18, TypeScript, Vite, Three.js, Lucide       |
+| Backend                   | Java 17, Spring Boot 3, Spring Security, JDBC, JWT |
+| Banco do CRM              | MySQL 8.4                                          |
+| Integração WhatsApp       | Evolution API 2.3.7                                |
+| Persistência da Evolution | PostgreSQL 15 e Redis 7                            |
+| Execução                  | Docker Compose                                     |
 
-O backend usa JDBC e SQL explícito, sem ORM. O esquema inicial fica em `backend/src/main/resources/schema.sql`.
+O backend usa JDBC e SQL explícito, sem ORM. O esquema é versionado com Flyway em `backend/src/main/resources/db/migration`.
 
 ## Requisitos
 
@@ -108,13 +119,13 @@ docker compose logs -f backend
 
 Quando os serviços estiverem prontos:
 
-| Serviço | Endereço local |
-| --- | --- |
-| Alves.CRM | [http://localhost:3000](http://localhost:3000) |
-| API | [http://localhost:8080](http://localhost:8080) |
-| Swagger UI | [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html) |
-| OpenAPI JSON | [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs) |
-| Evolution API | [http://localhost:8081](http://localhost:8081) |
+| Serviço       | Endereço local                                                                             |
+| ------------- | ------------------------------------------------------------------------------------------ |
+| Alves.CRM     | [http://localhost:3000](http://localhost:3000)                                             |
+| API           | [http://localhost:8080](http://localhost:8080)                                             |
+| Swagger UI    | [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html) |
+| OpenAPI JSON  | [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)                     |
+| Evolution API | [http://localhost:8081](http://localhost:8081)                                             |
 
 O Swagger UI documenta e permite explorar os endpoints da API; o JSON OpenAPI pode ser usado para gerar clientes e tipos. Esses endereços são locais. O MySQL também publica a porta `3306` para desenvolvimento local. Não exponha documentação interativa, portas de banco de dados ou serviços administrativos à internet sem controles de acesso e configuração apropriados.
 
@@ -149,25 +160,96 @@ Os dados do MySQL e da Evolution ficam em volumes nomeados. **`docker compose do
 
 Se já existir um volume MySQL de uma instalação anterior, mudar `MYSQL_DATABASE` ou `MYSQL_USER` no `.env` não renomeia nem migra o banco existente automaticamente.
 
+O esquema é gerenciado por migrações Flyway em `backend/src/main/resources/db/migration`. Em um banco existente, a migração inicial é registrada como baseline e as versões seguintes são aplicadas. Faça backup do banco antes de atualizar a aplicação.
+
+## Módulos comerciais e de IA
+
+### Leads e pipeline
+
+O módulo de vendas permite:
+
+- registrar leads capturados pela IA ou pela equipe;
+- pesquisar contatos por nome, telefone, empresa ou interesse;
+- manter observações, empresa e canal de interesse;
+- acompanhar a etapa atual do lead no processo comercial;
+- usar esse dados como base para reuniões e prospecção.
+
+A interface de leads fica disponível na aba de pipeline comercial e pode ser usada tanto por atendimento quanto por vendas.
+
+### Agenda e reuniões
+
+A agenda interna oferece:
+
+- criação de reuniões vinculadas a um lead;
+- definição de horário e duração;
+- observações da pauta da conversa;
+- acompanhamento do conjunto de encontros agendados.
+
+Esse fluxo foi pensado para dar continuidade ao processo comercial iniciado em conversa ou em captação de oportunidades.
+
+### Catálogo de serviços
+
+O catálogo possibilita:
+
+- criar serviços e ofertas;
+- informar resumo, descrição, faixa de investimento e prazo;
+- ativar ou desativar itens para a IA recomendá-los ou não;
+- manter um portfólio consistente para o atendimento automatizado.
+
+A IA usa esse catálogo para responder dúvidas de clientes sobre serviços e valores.
+
+### Assistente com IA
+
+O CRM inclui um assistente automatizado com comportamento controlado por instruções e materiais de conhecimento. Ele pode:
+
+- responder clientes em tempo real pelo WhatsApp;
+- consultar a base de conhecimento e as instruções do sistema;
+- sugerir ou capturar leads durante o atendimento;
+- agendar reuniões com o cliente diretamente no fluxo;
+- transferir o atendimento para um humano quando necessário;
+- ser reativado manualmente pelo atendente no chat.
+
+A IA só fica disponível quando `AI_ENABLED=true` e uma `OPENAI_API_KEY` válida estiver configurada no backend.
+
+### Treinamento da IA
+
+A página de treinamento da IA permite:
+
+- definir instruções de comportamento do assistente;
+- cadastrar materiais de conhecimento em texto;
+- indexar conteúdo para busca semântica usando embeddings;
+- excluir ou editar materiais já existentes;
+- verificar se a IA está configurada corretamente.
+
+A experiência foi desenhada para permitir ajuste contínuo da linguagem, políticas, diferenciais e informações operacionais da empresa sem alterar o código.
+
 ## Configuração
 
 O `.env.example` contém somente placeholders não funcionais. Todas as credenciais precisam ser personalizadas no `.env`, que é ignorado pelo Git.
 
-| Variável | Obrigatória | Descrição |
-| --- | --- | --- |
-| `MYSQL_DATABASE` | Sim | Nome do banco do CRM. |
-| `MYSQL_USER` | Sim | Usuário do MySQL para a API. |
-| `MYSQL_PASSWORD` | Sim | Senha do usuário do MySQL. |
-| `MYSQL_ROOT_PASSWORD` | Sim | Senha administrativa do MySQL. |
-| `JWT_SECRET` | Sim | Chave usada para assinar tokens JWT; pelo menos 32 bytes. |
-| `JWT_TOKEN_HOURS` | Não | Validade do token em horas. Padrão: `12`. |
-| `CRM_ADMIN_EMAIL` | Sim | E-mail da conta administrativa inicial. |
-| `CRM_ADMIN_PASSWORD` | Sim | Senha da conta inicial; mínimo de 12 caracteres. |
-| `EVOLUTION_API_KEY` | Sim | Chave de autenticação da Evolution API. |
-| `EVOLUTION_INSTANCE` | Não | Nome da instância WhatsApp. Padrão: `suporte`. |
-| `EVOLUTION_WEBHOOK_SECRET` | Sim | Segredo verificado pelo webhook do backend. |
-| `CRM_CLOSED_MESSAGE` | Não | Texto enviado ao encerrar um atendimento. |
-| `EVOLUTION_DB_PASSWORD` | Sim | Senha do PostgreSQL usado pela Evolution API. |
+| Variável                   | Obrigatória        | Descrição                                                                  |
+| -------------------------- | ------------------ | -------------------------------------------------------------------------- |
+| `MYSQL_DATABASE`           | Sim                | Nome do banco do CRM.                                                      |
+| `MYSQL_USER`               | Sim                | Usuário do MySQL para a API.                                               |
+| `MYSQL_PASSWORD`           | Sim                | Senha do usuário do MySQL.                                                 |
+| `MYSQL_ROOT_PASSWORD`      | Sim                | Senha administrativa do MySQL.                                             |
+| `JWT_SECRET`               | Sim                | Chave usada para assinar tokens JWT; pelo menos 32 bytes.                  |
+| `JWT_TOKEN_HOURS`          | Não                | Validade do token em horas. Padrão: `12`.                                  |
+| `CRM_ADMIN_EMAIL`          | Sim                | E-mail da conta administrativa inicial.                                    |
+| `CRM_ADMIN_PASSWORD`       | Sim                | Senha da conta inicial; mínimo de 12 caracteres.                           |
+| `EVOLUTION_API_KEY`        | Sim                | Chave de autenticação da Evolution API.                                    |
+| `EVOLUTION_INSTANCE`       | Não                | Nome da instância WhatsApp. Padrão: `suporte`.                             |
+| `EVOLUTION_WEBHOOK_SECRET` | Sim                | Segredo verificado pelo webhook do backend.                                |
+| `CRM_CLOSED_MESSAGE`       | Não                | Texto enviado ao encerrar um atendimento.                                  |
+| `AI_ENABLED`               | Não                | Ativa o atendimento automático. Padrão: `false`.                           |
+| `OPENAI_API_KEY`           | Necessária para IA | Chave do provedor, mantida apenas no ambiente do backend.                  |
+| `OPENAI_BASE_URL`          | Não                | Endpoint compatível com a API OpenAI. Padrão: `https://api.openai.com/v1`. |
+| `OPENAI_CHAT_MODEL`        | Não                | Modelo de conversa. Padrão: `gpt-4.1-mini`.                                |
+| `OPENAI_EMBEDDING_MODEL`   | Não                | Modelo para a base de conhecimento. Padrão: `text-embedding-3-small`.      |
+| `AI_MAX_HISTORY_MESSAGES`  | Não                | Mensagens recentes incluídas no contexto. Padrão: `12`.                    |
+| `EVOLUTION_DB_PASSWORD`    | Sim                | Senha do PostgreSQL usado pela Evolution API.                              |
+
+Ative a IA com `AI_ENABLED=true` e `OPENAI_API_KEY` no `.env`, depois reinicie o backend. A chave permanece no ambiente do servidor e não é enviada ao frontend. O CRM inclui catálogo, captação de leads, agenda interna e uma página para editar instruções e documentos de conhecimento; para indexar documentos, é necessário configurar uma chave válida no provedor. A IA pode usar essas ferramentas, transferir o atendimento para uma pessoa ou ser reativada pelo atendente no chat.
 
 No Compose, os endereços entre containers são configurados automaticamente. Para execução local do backend fora do Docker, a URL do MySQL e `EVOLUTION_API_URL` devem apontar para os serviços locais, conforme os passos de desenvolvimento abaixo.
 
@@ -249,11 +331,13 @@ O build do backend usado pelo Dockerfile não executa testes (`-DskipTests`); ro
 │   ├── src/main/java/com/alvescrm/
 │   │   ├── auth/          # Autenticação, JWT e bootstrap do administrador
 │   │   ├── conversation/  # Conversas, mensagens e status
+│   │   ├── ai/            # Orquestração, tools, embeddings e RAG
+│   │   ├── sales/         # Leads, serviços e agenda comercial
 │   │   ├── shared/        # Tratamento e contratos de erro compartilhados
 │   │   └── whatsapp/      # Evolution API, QR Code e webhook
 │   └── src/main/resources/
 │       ├── application.yml
-│       └── schema.sql
+│       └── db/migration/  # Migrações Flyway
 ├── frontend/
 │   └── src/
 │       ├── api/           # Tipos gerados do OpenAPI
@@ -274,18 +358,24 @@ O projeto inclui documentação Swagger/OpenAPI servida pelo backend:
 
 O Swagger UI permite consultar os contratos e experimentar as operações da API durante o desenvolvimento. Em qualquer implantação acessível pela internet, restrinja ou desative a interface e proteja a especificação conforme a política de segurança do ambiente. As rotas do CRM exigem o cabeçalho `Authorization: Bearer SEU_TOKEN_JWT`, exceto login e webhook.
 
-| Método | Rota | Descrição |
-| --- | --- | --- |
-| `POST` | `/api/auth/login` | Autentica e emite um JWT. |
-| `GET` | `/api/auth/me` | Retorna o usuário autenticado. |
-| `GET` | `/api/conversations` | Lista conversas; aceita `search` e `status`. |
-| `GET` | `/api/conversations/{id}` | Consulta uma conversa. |
-| `GET` | `/api/conversations/{id}/messages` | Lista mensagens da conversa. |
-| `POST` | `/api/conversations/{id}/messages` | Envia uma mensagem pelo WhatsApp. |
-| `PATCH` | `/api/conversations/{id}/status` | Atualiza o status da conversa. |
-| `GET` | `/api/whatsapp/status` | Consulta o estado da conexão. |
-| `GET` | `/api/whatsapp/qr` | Obtém o QR Code de pareamento. |
-| `POST` | `/api/webhooks/evolution` | Recebe eventos autenticados da Evolution API. |
+| Método         | Rota                               | Descrição                                            |
+| -------------- | ---------------------------------- | ---------------------------------------------------- |
+| `POST`         | `/api/auth/login`                  | Autentica e emite um JWT.                            |
+| `GET`          | `/api/auth/me`                     | Retorna o usuário autenticado.                       |
+| `GET`          | `/api/conversations`               | Lista conversas; aceita `search` e `status`.         |
+| `GET`          | `/api/conversations/{id}`          | Consulta uma conversa.                               |
+| `GET`          | `/api/conversations/{id}/messages` | Lista mensagens da conversa.                         |
+| `POST`         | `/api/conversations/{id}/messages` | Envia uma mensagem pelo WhatsApp.                    |
+| `PATCH`        | `/api/conversations/{id}/status`   | Atualiza o status da conversa.                       |
+| `PATCH`        | `/api/conversations/{id}/ai-mode`  | Alterna entre atendimento IA e humano.               |
+| `GET/POST`     | `/api/sales/leads`                 | Consulta e registra leads.                           |
+| `GET/POST`     | `/api/sales/meetings`              | Consulta e agenda reuniões internas.                 |
+| `GET/POST/PUT` | `/api/sales/services`              | Consulta e mantém o catálogo.                        |
+| `GET/PUT`      | `/api/ai/training`                 | Consulta treinamento; instruções em `/instructions`. |
+| `POST/DELETE`  | `/api/ai/training/sources`         | Adiciona e remove conteúdo indexado para RAG.        |
+| `GET`          | `/api/whatsapp/status`             | Consulta o estado da conexão.                        |
+| `GET`          | `/api/whatsapp/qr`                 | Obtém o QR Code de pareamento.                       |
+| `POST`         | `/api/webhooks/evolution`          | Recebe eventos autenticados da Evolution API.        |
 
 Status de conversa disponíveis: `OPEN`, `IN_PROGRESS`, `WAITING` e `CLOSED`. Ao mudar para `CLOSED`, a API envia `CRM_CLOSED_MESSAGE`; a conversa só é encerrada se a Evolution aceitar o envio.
 

@@ -4,417 +4,418 @@
  */
 
 export interface paths {
-    "/api/conversations/{id}/messages": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Listar mensagens da conversa */
-        get: operations["findMessages"];
-        put?: never;
-        /** Enviar mensagem na conversa */
-        post: operations["reply"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+  "/api/conversations/{id}/messages": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/auth/login": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Entrar no CRM
-         * @description Autentica o usuário e retorna um token JWT.
-         */
-        post: operations["login"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Listar mensagens da conversa */
+    get: operations["findMessages"];
+    put?: never;
+    /** Enviar mensagem na conversa */
+    post: operations["reply"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/auth/login": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/conversations/{id}/status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /** Atualizar status da conversa */
-        patch: operations["updateStatus"];
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * Entrar no CRM
+     * @description Autentica o usuário e retorna um token JWT.
+     */
+    post: operations["login"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/conversations/{id}/status": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/whatsapp/status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Consultar conexão WhatsApp */
-        get: operations["status"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Atualizar status da conversa */
+    patch: operations["updateStatus"];
+    trace?: never;
+  };
+  "/api/whatsapp/status": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/whatsapp/qr": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Consultar QR Code do WhatsApp */
-        get: operations["qrCode"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Consultar conexão WhatsApp */
+    get: operations["status"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/whatsapp/qr": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/conversations": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Listar conversas */
-        get: operations["findAll"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Consultar QR Code do WhatsApp */
+    get: operations["qrCode"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/conversations": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/conversations/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Consultar conversa */
-        get: operations["findById"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Listar conversas */
+    get: operations["findAll"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/conversations/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/auth/me": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Consultar usuário autenticado */
-        get: operations["currentUser"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Consultar conversa */
+    get: operations["findById"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/auth/me": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    /** Consultar usuário autenticado */
+    get: operations["currentUser"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: {
-        MessageRequest: {
-            body: string;
-        };
-        ConversationMessage: {
-            /** Format: int64 */
-            id: number;
-            /** Format: int64 */
-            conversationId: number;
-            /** @enum {string} */
-            direction: "INBOUND" | "OUTBOUND";
-            body: string;
-            /** Format: date-time */
-            createdAt: string;
-        };
-        LoginRequest: {
-            email: string;
-            password: string;
-        };
-        LoginResponse: {
-            token: string;
-            /** Format: int64 */
-            expiresInSeconds: number;
-            user: components["schemas"]["UserResponse"];
-        };
-        UserResponse: {
-            /** Format: int64 */
-            id: number;
-            email: string;
-            displayName: string;
-        };
-        StatusRequest: {
-            /** @enum {string} */
-            status: "OPEN" | "IN_PROGRESS" | "WAITING" | "CLOSED";
-        };
-        Conversation: {
-            /** Format: int64 */
-            id: number;
-            phone: string;
-            contactName: string;
-            /** @enum {string} */
-            status: "OPEN" | "IN_PROGRESS" | "WAITING" | "CLOSED";
-            /** Format: int64 */
-            assignedUserId: number | null;
-            lastMessage: string | null;
-            /** Format: date-time */
-            lastMessageAt: string;
-            /** Format: date-time */
-            createdAt: string;
-        };
-        WhatsAppStatus: {
-            instance: string;
-            connected: boolean;
-            state: string;
-        };
-        WhatsAppQrCode: {
-            base64: string;
-        };
+  schemas: {
+    MessageRequest: {
+      body: string;
     };
-    responses: never;
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+    ConversationMessage: {
+      /** Format: int64 */
+      id: number;
+      /** Format: int64 */
+      conversationId: number;
+      /** @enum {string} */
+      direction: "INBOUND" | "OUTBOUND";
+      body: string;
+      /** Format: date-time */
+      createdAt: string;
+    };
+    LoginRequest: {
+      email: string;
+      password: string;
+    };
+    LoginResponse: {
+      token: string;
+      /** Format: int64 */
+      expiresInSeconds: number;
+      user: components["schemas"]["UserResponse"];
+    };
+    UserResponse: {
+      /** Format: int64 */
+      id: number;
+      email: string;
+      displayName: string;
+    };
+    StatusRequest: {
+      /** @enum {string} */
+      status: "OPEN" | "IN_PROGRESS" | "WAITING" | "CLOSED";
+    };
+    Conversation: {
+      /** Format: int64 */
+      id: number;
+      phone: string;
+      contactName: string;
+      /** @enum {string} */
+      status: "OPEN" | "IN_PROGRESS" | "WAITING" | "CLOSED";
+      aiMode: "AI" | "HUMAN";
+      /** Format: int64 */
+      assignedUserId: number | null;
+      lastMessage: string | null;
+      /** Format: date-time */
+      lastMessageAt: string;
+      /** Format: date-time */
+      createdAt: string;
+    };
+    WhatsAppStatus: {
+      instance: string;
+      connected: boolean;
+      state: string;
+    };
+    WhatsAppQrCode: {
+      base64: string;
+    };
+  };
+  responses: never;
+  parameters: never;
+  requestBodies: never;
+  headers: never;
+  pathItems: never;
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    findMessages: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ConversationMessage"][];
-                };
-            };
-        };
+  findMessages: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
     };
-    reply: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["MessageRequest"];
-            };
+        content: {
+          "*/*": components["schemas"]["ConversationMessage"][];
         };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ConversationMessage"];
-                };
-            };
-        };
+      };
     };
-    login: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["LoginRequest"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["LoginResponse"];
-                };
-            };
-        };
+  };
+  reply: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
     };
-    updateStatus: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["StatusRequest"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["Conversation"];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["MessageRequest"];
+      };
     };
-    status: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["WhatsAppStatus"];
-                };
-            };
+        content: {
+          "*/*": components["schemas"]["ConversationMessage"];
         };
+      };
     };
-    qrCode: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["WhatsAppQrCode"];
-                };
-            };
-        };
+  };
+  login: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    findAll: {
-        parameters: {
-            query?: {
-                search?: string;
-                status?: "OPEN" | "IN_PROGRESS" | "WAITING" | "CLOSED";
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["Conversation"][];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["LoginRequest"];
+      };
     };
-    findById: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["Conversation"];
-                };
-            };
+        content: {
+          "*/*": components["schemas"]["LoginResponse"];
         };
+      };
     };
-    currentUser: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["UserResponse"];
-                };
-            };
-        };
+  };
+  updateStatus: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
     };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["StatusRequest"];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["Conversation"];
+        };
+      };
+    };
+  };
+  status: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["WhatsAppStatus"];
+        };
+      };
+    };
+  };
+  qrCode: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["WhatsAppQrCode"];
+        };
+      };
+    };
+  };
+  findAll: {
+    parameters: {
+      query?: {
+        search?: string;
+        status?: "OPEN" | "IN_PROGRESS" | "WAITING" | "CLOSED";
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["Conversation"][];
+        };
+      };
+    };
+  };
+  findById: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["Conversation"];
+        };
+      };
+    };
+  };
+  currentUser: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["UserResponse"];
+        };
+      };
+    };
+  };
 }

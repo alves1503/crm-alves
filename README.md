@@ -9,15 +9,26 @@ CRM de atendimento via WhatsApp para organizar conversas e responder clientes em
 
 ## Visão geral
 
-- Inbox para acompanhar conversas e seus estados.
-- Busca e filtragem de atendimentos.
-- Histórico de mensagens recebidas e enviadas.
-- Respostas enviadas pelo WhatsApp conectado.
-- Assinatura de atendente nas mensagens enviadas pelo CRM.
+O Alves.CRM é um CRM completo para atendimento WhatsApp com foco em produtividade, automação e conversão comercial. Ele combina gestão de conversas, automação orientada por IA e módulos voltados para geração de oportunidades e organização de atendimento.
+
+### Funcionalidades atuais
+
+- Inbox completo para acompanhar conversas por status, busca e fila de atendimento.
+- Histórico de mensagens recebidas e enviadas em uma mesma interface.
+- Envio de respostas pelo WhatsApp conectado via Evolution API.
+- Assinatura de atendente nas mensagens emitidas pelo CRM.
 - Encerramento de atendimento com mensagem configurável.
-- Autenticação por e-mail e senha, com tokens JWT.
-- Integração com WhatsApp por QR Code via Evolution API.
-- Interface web responsiva.
+- Autenticação com e-mail, senha e JWT.
+- Bootstrap de administrador inicial com criação automática da conta.
+- Integração WhatsApp por QR Code e monitoramento do estado da instância.
+- Módulo de leads para registrar contatos, interesse e observações.
+- Módulo de agenda para marcar reuniões com leads e acompanhar compromissos.
+- Catálogo de serviços com precificação, prazo e status ativo/inativo.
+- Assistente de IA acionável para responder clientes, capturar leads e agendar reuniões.
+- Treinamento do modelo com instruções e materiais de conhecimento indexados por embeddings.
+- Transferência de atendimento para humano e reativação manual do modo IA no chat.
+- Gestão de conhecimento e instruções sem precisar mexer diretamente no código.
+- Interface web responsiva com páginas dedicadas para inbox, leads, reuniões, serviços e treinamento da IA.
 
 ## Tecnologias
 
@@ -150,6 +161,67 @@ Os dados do MySQL e da Evolution ficam em volumes nomeados. **`docker compose do
 Se já existir um volume MySQL de uma instalação anterior, mudar `MYSQL_DATABASE` ou `MYSQL_USER` no `.env` não renomeia nem migra o banco existente automaticamente.
 
 O esquema é gerenciado por migrações Flyway em `backend/src/main/resources/db/migration`. Em um banco existente, a migração inicial é registrada como baseline e as versões seguintes são aplicadas. Faça backup do banco antes de atualizar a aplicação.
+
+## Módulos comerciais e de IA
+
+### Leads e pipeline
+
+O módulo de vendas permite:
+
+- registrar leads capturados pela IA ou pela equipe;
+- pesquisar contatos por nome, telefone, empresa ou interesse;
+- manter observações, empresa e canal de interesse;
+- acompanhar a etapa atual do lead no processo comercial;
+- usar esse dados como base para reuniões e prospecção.
+
+A interface de leads fica disponível na aba de pipeline comercial e pode ser usada tanto por atendimento quanto por vendas.
+
+### Agenda e reuniões
+
+A agenda interna oferece:
+
+- criação de reuniões vinculadas a um lead;
+- definição de horário e duração;
+- observações da pauta da conversa;
+- acompanhamento do conjunto de encontros agendados.
+
+Esse fluxo foi pensado para dar continuidade ao processo comercial iniciado em conversa ou em captação de oportunidades.
+
+### Catálogo de serviços
+
+O catálogo possibilita:
+
+- criar serviços e ofertas;
+- informar resumo, descrição, faixa de investimento e prazo;
+- ativar ou desativar itens para a IA recomendá-los ou não;
+- manter um portfólio consistente para o atendimento automatizado.
+
+A IA usa esse catálogo para responder dúvidas de clientes sobre serviços e valores.
+
+### Assistente com IA
+
+O CRM inclui um assistente automatizado com comportamento controlado por instruções e materiais de conhecimento. Ele pode:
+
+- responder clientes em tempo real pelo WhatsApp;
+- consultar a base de conhecimento e as instruções do sistema;
+- sugerir ou capturar leads durante o atendimento;
+- agendar reuniões com o cliente diretamente no fluxo;
+- transferir o atendimento para um humano quando necessário;
+- ser reativado manualmente pelo atendente no chat.
+
+A IA só fica disponível quando `AI_ENABLED=true` e uma `OPENAI_API_KEY` válida estiver configurada no backend.
+
+### Treinamento da IA
+
+A página de treinamento da IA permite:
+
+- definir instruções de comportamento do assistente;
+- cadastrar materiais de conhecimento em texto;
+- indexar conteúdo para busca semântica usando embeddings;
+- excluir ou editar materiais já existentes;
+- verificar se a IA está configurada corretamente.
+
+A experiência foi desenhada para permitir ajuste contínuo da linguagem, políticas, diferenciais e informações operacionais da empresa sem alterar o código.
 
 ## Configuração
 
